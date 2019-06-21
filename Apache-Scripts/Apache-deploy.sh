@@ -1,3 +1,4 @@
+sudo dpkg --configure -a
 # Update packages and Upgrade system
 sudo apt-get update -y && sudo apt-get upgrade -y
 
