@@ -1,9 +1,8 @@
-#!/bin/sh
+!/bin/sh
 # Written by @AamnahAkram from http://aamnah.com
 #COLORS
 # Reset
 Color_Off='\033[0m'       # Text Reset
-
 # Regular Colors
 Red='\033[0;31m'          # Red
 Green='\033[0;32m'        # Green
