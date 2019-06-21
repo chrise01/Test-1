@@ -1,12 +1,5 @@
 #!/bin/sh
-
-#######################################
-# Bash script to install an AMP stack and PHPMyAdmin plus tweaks. For Debian based systems.
 # Written by @AamnahAkram from http://aamnah.com
-
-# In case of any errors (e.g. MySQL) just re-run the script. Nothing will be re-installed except for the packages with errors.
-#######################################
-
 #COLORS
 # Reset
 Color_Off='\033[0m'       # Text Reset
