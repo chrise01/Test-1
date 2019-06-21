@@ -1,4 +1,4 @@
 cd ~
-wget https://github.com/chrise01/Test-1/blob/master/Apache-Scripts/Apache-deploy.sh
+wget -N https://github.com/chrise01/Test-1/blob/master/Apache-Scripts/Apache-deploy.sh
 chmod -x ./Apache-deploy.sh
 bash ./Apache-deploy.sh
