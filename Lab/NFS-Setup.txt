@@ -1,0 +1,11 @@
+
+sudo apt install nfs-common
+sudo apt install nfs-kernel-server
+#Add Disk, mount, Add NFS folder
+sudo gedit /etc/exports
+## ie  /media/UB/Disk-1    *(rw,sync,no_subtree_check,no_root_squash)
+sudo exportfs -ra
+sudo service nfs-kernel-server restart
+
+#On ESXi Host:
+esxcli storage nfs add --host=10.10.1.100 --share=/media/ub/Disk-1/NFS-1 --volume-name=NFS-1

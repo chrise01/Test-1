@@ -1,0 +1,149 @@
+MAP THE Interfaces - Manually??
+eth0  68 - EXT - ens160
+eth1    fb - Lab-1 - ens192
+eth2    55 - Lab-2 .1 - ens224
+eth3   cd - Lab-3 .2 - ens256
+eth4 - 3d - Lab-4 .4 - ens161
+
+ifconfig
+sudo gedit /etc/network/interfaces
+172.16 - f8
+10.1.1 - ec
+10.1.2 - 16
+10.1.3 - 63
+10.1.4 - 05
+
+Check vCLoud IP address for external mapping
+
+auto ens160
+iface ens160 inet static
+   address 172.16.1.2
+   netmask 255.255.255.0
+   network 172.16.1.0
+   gateway 172.16.1.1
+   dns-nameservers 10.124.10.6
+   
+auto ens256
+iface ens256 inet static
+   address 10.1.3.1
+   netmask 255.255.255.0
+   network 10.1.3.0
+   dns-nameservers 10.1.4.2
+
+
+auto ens192
+iface ens192 inet static
+   address 10.1.1.1
+   netmask 255.255.255.0
+   network 10.1.1.0
+   dns-nameservers 10.1.4.2
+
+
+auto ens161
+iface ens161 inet static
+   address 10.1.4.1
+   netmask 255.255.255.0
+   network 10.1.4.0
+   dns-nameservers 10.1.4.2
+
+
+auto ens224
+iface ens224 inet static
+   address 10.1.2.1
+   netmask 255.255.255.0
+   network 10.1.2.0
+   dns-nameservers 10.1.4.2
+
+
+
+sudo edit /etc/sysctl.conf - net.ipv4.ip_forward=1
+
+sysctl -p  
+
+
+sudo sysctl -w net.ipv4.ip_forward=1 - Doesn’t work?
+
+sudo echo 1 > /proc/sys/net/ipv4/ip_forward
+sysctl -p  
+sudo service iptables restart
+
+
+sudo route add -net 10.1.1.0 netmask 255.255.255.0 gw 10.1.1.1
+sudo route add -net 10.1.2.0 netmask 255.255.255.0 gw 10.1.2.1
+sudo route add -net 10.1.3.0 netmask 255.255.255.0 gw 10.1.3.1
+sudo route add -net 10.1.4.0 netmask 255.255.255.0 gw 10.1.4.1
+sudo route add -net 172.16.1.0 netmask 255.255.255.0 gw 172.16.1.1
+
+
+sudo apt-get install isc-dhcp-relay
+
+
+sudo iptables --table nat —append POSTROUTING —-out-interface (external) -j MASQUERADE
+sudo iptables —-append FORWARD —-in-interface eth0 -j ACCEPT  
+sudo iptables —-append FORWARD —-in-interface eth1 -j ACCEPT
+sudo iptables —-append FORWARD —-in-interface eth2 -j ACCEPT
+sudo iptables —-append FORWARD —-in-interface eth3 -j ACCEPT
+sudo iptables —-append FORWARD —-in-interface eth4 -j ACCEPT
+sudo iptables -L
+sudo iptables-save
+
+
+
+sudo apt-get install iptraf
+sudo iptraf
+
+
+
+
+
+need 
+#!/bin/bash - very start of the .sh file
+
+sudo edit /etc/iet/ietd.conf
+sudo rescan-scsi-bus.sh
+sudo service iscsitarget restart
+
+sudo iptables -L
+sudo iptable -save
+
+sudo apt-get install iptables-persistent
+
+
+cat > /etc/network/interfaces
+
+">>" Append
+
+
+###Routing
+
+sudo sysctl -w net.ipv4.ip_forward=1
+sudo sysctl -p
+sudo route add -net 10.5.0.0 netmask 255.255.000.0 gw 10.10.1.250
+sudo iptables -A FORWARD -o ens160 -j ACCEPT
+sudo iptables -A FORWARD -m state --state ESTABLISHED,RELATED -i ens160 -j ACCEPT
+sudo iptables -t nat -A POSTROUTING -o ens160 -j MASQUERADE
+sudo iptables -L
+sudo iptables-save
+sudo service iptables restart
+
+
+
+sudo sysctl -w net.ipv4.ip_forward=1
+sudo sysctl -p
+sudo iptables -A FORWARD -o ens34 -j ACCEPT
+sudo iptables -A FORWARD -m state --state ESTABLISHED,RELATED -i ens34 -j ACCEPT
+sudo iptables -t nat -A POSTROUTING -o ens34 -j MASQUERADE
+sudo iptables -L
+sudo iptables-save
+sudo service iptables restart
+
+
+
+sudo sysctl -w net.ipv4.ip_forward=1
+sudo sysctl -p
+sudo iptables -A FORWARD -o ens160 -j ACCEPT
+sudo iptables -A FORWARD -m state --state ESTABLISHED,RELATED -i ens160 -j ACCEPT
+sudo iptables -t nat -A POSTROUTING -o ens160 -j MASQUERADE
+sudo iptables -L
+sudo iptables-save
+sudo service iptables restart
