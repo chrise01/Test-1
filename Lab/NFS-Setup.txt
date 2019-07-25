@@ -2,6 +2,7 @@
 sudo apt install nfs-common
 sudo apt install nfs-kernel-server
 #Add Disk, mount, Add NFS folder
+sudo echo "- - -" | sudo tee /sys/class/scsi_host/host?/scan
 sudo gedit /etc/exports
 ## ie  /media/UB/Disk-1    *(rw,sync,no_subtree_check,no_root_squash)
 sudo exportfs -ra
