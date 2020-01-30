@@ -147,3 +147,42 @@ sudo iptables -t nat -A POSTROUTING -o ens160 -j MASQUERADE
 sudo iptables -L
 sudo iptables-save
 sudo service iptables restart
+
+
+
+
+
+#--------------
+#30/1/2020
+
+sudo sysctl -w net.ipv4.ip_forward=1
+sudo sysctl -p
+
+sudo iptables --table nat -append POSTROUTING --out-interface ens192 -j MASQUERADE
+sudo iptables --append FORWARD --in-interface ens160 -j ACCEPT
+
+
+sudo ufw enable
+sudo ufw logging on
+
+sudo gedit /etc/ufw/before.rules
+#
+#
+# nat Table rules
+*nat
+:POSTROUTING ACCEPT [0:0]
+# Forward traffic
+-A POSTROUTING -s 192.168.2.0/24 -o ens192 -j MASQUERADE
+COMMIT
+#
+sudo ufw disable && sudo ufw enable
+
+sudo iptables -L
+sudo ifdown ens160
+sudo ifdown end192
+sudo ifup ens160
+sudo ifup end192
+sudo ufw disable && sudo ufw enable
+sudo exportfs -ra
+sudo service nfs-kernel-server restart
+
